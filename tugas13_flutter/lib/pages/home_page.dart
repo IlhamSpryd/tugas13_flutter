@@ -99,42 +99,45 @@ class _HomePageState extends State<HomePage> {
                 ),
 
           const SizedBox(height: 25),
-          _buildMenuSection("Private", [
-            _buildMenuItem(
-              Icons.insert_drive_file,
-              "Getting Started on Mobile",
-              () {
-                debugPrint("Clicked Getting Started on Mobile");
-              },
-            ),
-            _buildMenuItem(Icons.checklist, "Habit Tracker", () {
-              debugPrint("Clicked Habit Tracker");
-            }),
-            _buildMenuItem(Icons.list, "Weekly To-do List", () {
-              debugPrint("Clicked Weekly To-do List");
-            }),
-            _buildMenuItem(Icons.person, "Personal Website", () {
-              debugPrint("Clicked Personal Website");
-            }),
-            SizedBox(height: 25),
-            Row(
-              children: [
-                Icon(Icons.more_horiz, color: Colors.grey),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    "View more",
-                    style: const TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 15,
-                      color: Colors.grey,
+          Container(
+            decoration: BoxDecoration(color: Colors.grey[50]),
+            child: _buildMenuSection("Private", [
+              _buildMenuItem(
+                Icons.insert_drive_file,
+                "Getting Started on Mobile",
+                () {
+                  debugPrint("Clicked Getting Started on Mobile");
+                },
+              ),
+              _buildMenuItem(Icons.checklist, "Habit Tracker", () {
+                debugPrint("Clicked Habit Tracker");
+              }),
+              _buildMenuItem(Icons.list, "Weekly To-do List", () {
+                debugPrint("Clicked Weekly To-do List");
+              }),
+              _buildMenuItem(Icons.person, "Personal Website", () {
+                debugPrint("Clicked Personal Website");
+              }),
+              SizedBox(height: 25),
+              Row(
+                children: [
+                  Icon(Icons.more_horiz, color: Colors.grey),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "View more",
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 15,
+                        color: Colors.grey,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
-            ),
-          ]),
+                ],
+              ),
+            ]),
+          ),
           const SizedBox(height: 50),
           Container(
             padding: const EdgeInsets.all(14),

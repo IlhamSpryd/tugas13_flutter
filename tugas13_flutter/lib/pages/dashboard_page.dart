@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tugas13_flutter/pages/popup_menu_button/settings.dart';
+
 import 'add_note_page.dart';
 import 'home_page.dart';
 import 'inbox_page.dart';
@@ -43,7 +44,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   Future<void> logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.clear(); 
+    await prefs.clear();
 
     Navigator.pushAndRemoveUntil(
       context,
@@ -55,13 +56,13 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight + 8),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
           child: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.grey[50],
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -151,8 +152,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                                 title: const Text('Logout'),
                                 onTap: () {
-                                  Navigator.pop(context); 
-                                  logout(context); 
+                                  Navigator.pop(context);
+                                  logout(context);
                                 },
                               ),
                             ],
@@ -219,7 +220,7 @@ class _DashboardPageState extends State<DashboardPage> {
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[50],
         selectedItemColor: Colors.black,
         items: [
           BottomNavigationBarItem(

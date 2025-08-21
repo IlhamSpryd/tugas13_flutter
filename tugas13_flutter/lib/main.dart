@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tugas13_flutter/pages/dashboard_page.dart';
+import 'package:tugas13_flutter/pages/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
       title: 'Notion Notes App',
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.grey[50],
         fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey[50],
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
           titleTextStyle: const TextStyle(
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           labelStyle: const TextStyle(color: Colors.grey),
         ),
       ),
-      home: const DashboardPage(),
+      home: const LoginPage(),
     );
   }
 }
