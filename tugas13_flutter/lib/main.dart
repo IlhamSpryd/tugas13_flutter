@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:tugas13_flutter/pages/login_page.dart';
-import 'package:tugas13_flutter/pages/profile_page.dart';
-import 'package:tugas13_flutter/pages/register_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'pages/login_page.dart';
+import 'pages/register_page.dart';
+import 'pages/profile_page.dart';
+import 'pages/dashboard_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // ini buat cek apakah user sudah login
+  Future<bool> _isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedEmail = prefs.getString('user_email');
+    return savedEmail != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Notion Notes App',
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
-        '/profile': (context) => const ProfilePage(),
-      },
+      title: 'Tugas 13 Notes App',
       theme: ThemeData(
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.grey[50],
+        scaffoldBackgroundColor: Colors.white,
         fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey[50],
+          backgroundColor: Colors.white,
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
           titleTextStyle: const TextStyle(
@@ -60,22 +64,25 @@ class MyApp extends StatelessWidget {
           ),
           labelStyle: const TextStyle(color: Colors.grey),
         ),
-        switchTheme: SwitchThemeData(
-          thumbColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.selected)) {
-              return Colors.green;
-            }
-            return Colors.grey;
-          }),
-          trackColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (states.contains(WidgetState.selected)) {
-              return Colors.green.shade200;
-            }
-            return Colors.grey.shade300;
-          }),
-        ),
       ),
-      home: const LoginPage(),
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPage(),
+        '/profile': (context) => const ProfilePage(),
+        '/dashboard': (context) => const DashboardPage(),
+      },
+      // Wrapper bakal cek login state
+      home: FutureBuilder<bool>(
+        future: _isLoggedIn(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return snapshot.data! ? const DashboardPage() : const LoginPage();
+        },
+      ),
     );
   }
 }

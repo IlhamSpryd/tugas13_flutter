@@ -13,9 +13,10 @@ dependencies:
   sqflite: ^2.3.0
   path: ^1.9.0
   cupertino_icons: ^1.0.8
-  shared_preferences: ^2.1.1
+  shared_preferences: ^2.2.1
   image_picker: ^0.8.7+4
   url_launcher: ^6.3.0
+  crypto: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -25,30 +26,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/logonotion.png
-    - assets/images/logonotion.webp
-    - assets/images/add.png
-    - assets/images/delete.png
-    - assets/images/edit.png
-    - assets/images/ghostBackground_FC#TemplateBrowserButton_1_29_19243931533.png
-    - assets/images/home.png
-    - assets/images/Icon_1_30_image.png
-    - assets/images/Icon_1_40_image.png
-    - assets/images/Icon_2_42_image.png
-    - assets/images/Icon_2_43_image.png
-    - assets/images/Icon_2_44_image.png
-    - assets/images/Icon_3_11_image.png
-    - assets/images/Icon_3_22_image.png
-    - assets/images/Icon_4_6_image.png
-    - assets/images/Icon_4_7_image.png
-    - assets/images/Icon_4_8_image.png
-    - assets/images/Icon_4_21_image.png
-    - assets/images/Icon_4_22_image.png
-    - assets/images/Icon_4_24_image.png
-    - assets/images/Icon_5_13_image.png
-    - assets/images/inbox.png
-    - assets/images/search.png
-    - assets/images/user.png
+    - assets/images/
 
   fonts:
     - family: RobotoCondensed

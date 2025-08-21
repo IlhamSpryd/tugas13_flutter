@@ -41,41 +41,53 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: TextField(
-            controller: searchController,
-            decoration: const InputDecoration(
-              hintText: 'Search notes...',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-            ),
-            onChanged: filterNotes,
-          ),
-        ),
-        Expanded(
-          child: filteredNotes.isEmpty
-              ? const Center(child: Text('No notes found'))
-              : ListView.builder(
-                  itemCount: filteredNotes.length,
-                  itemBuilder: (context, index) {
-                    final note = filteredNotes[index];
-                    return ListTile(
-                      title: Text(note.title),
-                      subtitle: Text(note.content),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => EditNotePage(note: note)),
-                        ).then((_) => fetchNotes());
-                      },
-                    );
-                  },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Ask AI anything in Notion"),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              onChanged: filterNotes,
+              decoration: InputDecoration(
+                hintText: "Search notes...",
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-        ),
-      ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: filteredNotes.isEmpty
+                ? const Center(child: Text('No notes found'))
+                : ListView.builder(
+                    itemCount: filteredNotes.length,
+                    itemBuilder: (context, index) {
+                      final note = filteredNotes[index];
+                      return ListTile(
+                        leading: const Icon(Icons.description_outlined),
+                        title: Text(note.title),
+                        subtitle: const Text("in Private"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => EditNotePage(note: note)),
+                          ).then((_) => fetchNotes());
+                        },
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

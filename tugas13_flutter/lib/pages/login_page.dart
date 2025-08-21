@@ -1,8 +1,12 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
+
 import 'dashboard_page.dart';
+import 'register_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -19,18 +23,18 @@ class _LoginPageState extends State<LoginPage> {
 
   void login() async {
     final prefs = await SharedPreferences.getInstance();
-    final savedEmail = prefs.getString('user_email');
-    final savedPassword = prefs.getString('user_password');
+    final storedEmail = prefs.getString('user_email');
+    final storedPassword = prefs.getString('user_password');
 
-    if (emailController.text == savedEmail &&
-        passwordController.text == savedPassword) {
-      await prefs.setString('logged_in_email', emailController.text);
+    var bytes = utf8.encode(passwordController.text.trim());
+    var hashedInput = sha256.convert(bytes).toString();
+
+    if (emailController.text.trim() == storedEmail &&
+        hashedInput == storedPassword) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const DashboardPage()),
       );
-      emailController.clear();
-      passwordController.clear();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Email atau password salah')),
@@ -38,10 +42,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<void> _launchUrl(String url) async {
+  void _launchUrl(String url) async {
     final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
+    if (!await launchUrl(uri)) {
+      throw 'Could not launch $url';
     }
   }
 
@@ -158,7 +162,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (_) => const RegisterPage()),
+                        );
                       },
                       child: const Text(
                         "Sign Up",

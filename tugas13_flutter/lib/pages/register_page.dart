@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -14,10 +15,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+
   bool isValidEmail(String email) {
     return RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email);
   }
@@ -28,43 +29,46 @@ class _RegisterPageState extends State<RegisterPage> {
     final password = passwordController.text.trim();
     final confirmPassword = confirmPasswordController.text.trim();
 
-    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Format email tidak valid')));
+    if (!isValidEmail(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Format email tidak valid'))
+      );
       return;
     }
 
     if (name.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Nama dan password tidak boleh kosong')),
+        const SnackBar(content: Text('Nama dan password tidak boleh kosong'))
       );
       return;
     }
+
     if (password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password minimal 6 karakter')),
+        const SnackBar(content: Text('Password minimal 6 karakter'))
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password dan Confirm Password tidak sama'),
-        ),
+        const SnackBar(content: Text('Password dan Confirm Password tidak sama'))
       );
       return;
     }
 
+    // hash password
+    var bytes = utf8.encode(password);
+    var hashedPassword = sha256.convert(bytes).toString();
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_name', name);
     await prefs.setString('user_email', email);
-    await prefs.setString('user_password', password);
+    await prefs.setString('user_password', hashedPassword);
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Registration successful')));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Registration successful'))
+    );
 
     Navigator.pushReplacement(
       context,
@@ -94,11 +98,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: nameController,
                 decoration: InputDecoration(
                   labelText: 'Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true, fillColor: Colors.white,
                 ),
               ),
               const SizedBox(height: 16),
@@ -106,11 +107,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true, fillColor: Colors.white,
                 ),
               ),
               const SizedBox(height: 16),
@@ -119,22 +117,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true, fillColor: Colors.white,
                   suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.grey,
-                    ),
+                    icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off, color: Colors.grey),
                     onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
+                      setState(() { _obscurePassword = !_obscurePassword; });
                     },
                   ),
                 ),
@@ -145,22 +133,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: _obscureConfirmPassword,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: Colors.white,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  filled: true, fillColor: Colors.white,
                   suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirmPassword
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                      color: Colors.grey,
-                    ),
+                    icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off, color: Colors.grey),
                     onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
+                      setState(() { _obscureConfirmPassword = !_obscureConfirmPassword; });
                     },
                   ),
                 ),
@@ -173,9 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: register,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                   child: const Text('Sign Up', style: TextStyle(fontSize: 18)),
                 ),
@@ -184,10 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Already have an account? ",
-                    style: TextStyle(color: Colors.grey),
-                  ),
+                  const Text("Already have an account? ", style: TextStyle(color: Colors.grey)),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacement(
@@ -195,13 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         MaterialPageRoute(builder: (_) => const LoginPage()),
                       );
                     },
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: const Text("Login", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
