@@ -182,7 +182,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 Center(
                   child: SizedBox(
-                    width: 230,
+                    width: 205,
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(

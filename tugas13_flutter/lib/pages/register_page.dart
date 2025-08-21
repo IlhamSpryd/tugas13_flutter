@@ -14,12 +14,16 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   void register() async {
     final name = nameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
 
     if (!email.contains('@')) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -34,6 +38,21 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       return;
     }
+    if (password.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password minimal 6 karakter')),
+      );
+      return;
+    }
+
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password dan Confirm Password tidak sama'),
+        ),
+      );
+      return;
+    }
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('user_name', name);
@@ -42,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(const SnackBar(content: Text('Register berhasil')));
+    ).showSnackBar(const SnackBar(content: Text('Registration successful')));
 
     Navigator.pushReplacement(
       context,
@@ -112,6 +131,32 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       setState(() {
                         _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: confirmPasswordController,
+                obscureText: _obscureConfirmPassword,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
                       });
                     },
                   ),

@@ -52,6 +52,20 @@ class MyApp extends StatelessWidget {
           ),
           labelStyle: const TextStyle(color: Colors.grey),
         ),
+        switchTheme: SwitchThemeData(
+          thumbColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return Colors.green;
+            }
+            return Colors.grey;
+          }),
+          trackColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return Colors.green.shade200;
+            }
+            return Colors.grey.shade300;
+          }),
+        ),
       ),
       home: const LoginPage(),
     );

@@ -76,12 +76,12 @@ class _DashboardPageState extends State<DashboardPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CircleAvatar(
-                      backgroundColor: Colors.grey.shade200,
+                      backgroundColor: Colors.blueGrey,
                       child: Text(
-                        userName.isNotEmpty ? userName[0].toUpperCase() : "U",
+                        userName.isNotEmpty ? userName[0].toUpperCase() : "x",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                       ),
                     ),
