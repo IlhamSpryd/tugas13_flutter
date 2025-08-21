@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tugas13_flutter/pages/popup_menu_button/settings.dart';
+import 'package:tugas13_flutter/pages/profile_page.dart';
+import 'package:tugas13_flutter/pages/settings.dart';
 
 import 'add_note_page.dart';
 import 'home_page.dart';
@@ -36,8 +37,8 @@ class _DashboardPageState extends State<DashboardPage> {
   void loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      userName = prefs.getString('user_name') ?? 'User';
-      userEmail = prefs.getString('user_email') ?? 'example@gmail.com';
+      userName = prefs.getString('user_name') ?? '';
+      userEmail = prefs.getString('user_email') ?? '';
     });
     print("Loaded user: $userName, $userEmail");
   }
@@ -133,6 +134,22 @@ class _DashboardPageState extends State<DashboardPage> {
                                 ),
                               ),
                               const SizedBox(height: 20),
+                              ListTile(
+                                leading: Image.asset(
+                                  "assets/images/user.png",
+                                  width: 25,
+                                  height: 25,
+                                ),
+                                title: const Text('Profile'),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const ProfilePage(),
+                                    ),
+                                  );
+                                },
+                              ),
                               ListTile(
                                 leading: Image.asset(
                                   "assets/images/add.png",

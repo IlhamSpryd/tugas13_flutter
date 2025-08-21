@@ -48,6 +48,7 @@ flutter:
     - assets/images/Icon_5_13_image.png
     - assets/images/inbox.png
     - assets/images/search.png
+    - assets/images/user.png
 
   fonts:
     - family: RobotoCondensed

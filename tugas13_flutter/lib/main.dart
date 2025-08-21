@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tugas13_flutter/pages/login_page.dart';
+import 'package:tugas13_flutter/pages/profile_page.dart';
+import 'package:tugas13_flutter/pages/register_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Notion Notes App',
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPage(),
+        '/profile': (context) => const ProfilePage(),
+      },
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.grey[50],
